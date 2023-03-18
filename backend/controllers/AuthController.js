@@ -92,6 +92,32 @@ const authController = {
             return res.status(500).json(err);
         }
     },
+    // req refreshToken
+    requestRefreshToken: async (req, res) => {
+        const refreshToken = req.cookies.refreshToken;
+        if (!refreshToken) {
+            return res.status(401).json({ message: 'You are not authenticated' });
+        }
+        if (!refreshTokens.includes(refreshToken)) {
+            return res.status(403).json({ message: 'Refresh token is not valid' });
+        }
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
+            if(err) {
+                console.error(err);
+            }
+            refreshTokens = refreshTokens.filter(token => token !== refreshToken);
+            const newAccessToken = authController.generateAccessToken(user);
+            const newRefreshToken = authController.generateRefreshToken(user);
+            refreshTokens.push(newRefreshToken);
+            res.cookie('refreshToken', newRefreshToken, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'strict',
+                path: '/',
+            });
+            res.status(200).json({ accessToken: newAccessToken });
+        });
+    },
     //logout
     logoutUser: async (req, res) => {
         const refreshToken = req.cookies.refreshToken;
