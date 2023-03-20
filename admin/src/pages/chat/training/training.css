@@ -1,0 +1,88 @@
+.userList {
+  flex: 4;
+  padding: 20px;
+}
+
+.userListUser {
+  display: flex;
+  align-items: center;
+}
+
+.userListImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.userListEdit{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.userListDelete{
+    color: red;
+    cursor: pointer;
+}
+
+.userListTitle {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.userListTitleContainer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* userListPaging */
+.userListPaging {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.userListPagingBtn, .userListPagingBtn, .userListPagingNumber{
+  border: none;
+  background-color: #f5f5f5;
+  padding: 10px;
+  cursor: pointer;
+  margin: 0 10px;
+  border-radius: 3px;
+}
+
+.userListPagingNumber{
+  background-color: transparent;
+}
+
+.userListPagingBtn:hover, .userListPagingBtn:hover{
+  background-color: #e5e5e5;
+}
+
+.userListPagingBtnActive, .userListPagingBtnActive{
+  background-color: #e5e5e5;
+}
+
+/* userList */
+.userAddButton{
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color: #3bb077;
+  color: white;
+  cursor: pointer;
+  margin-right: 20px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px 10px;
+}
+.Training-btn{
+  width: 100%;
+}
