@@ -35,7 +35,7 @@ export default function ViewChat() {
       redirect: 'follow'
     }
 
-    fetch(`http://localhost:8000/v1/chat/${id}`, requestOptions)
+    fetch(`https://nhat-desu-server.onrender.com/v1/chat/${id}`, requestOptions)
       .then(response => response.text())
       .then(result => {
         getData();
@@ -57,7 +57,7 @@ export default function ViewChat() {
       redirect: 'follow'
     };
 
-    fetch(`http://localhost:8000/v1/chat/${id}`, requestOptions)
+    fetch(`https://nhat-desu-server.onrender.com/v1/chat/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => setDataRequest(result))
       .catch(error => console.log('error', error));

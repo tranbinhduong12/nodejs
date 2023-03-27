@@ -1,9 +1,6 @@
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
-import AtatarDefault from './avatar.jpg';
+import NotesIcon from '@mui/icons-material/Notes';
 import { Link } from "react-router-dom";
 import "./user.css";
 import axios from "axios";
@@ -11,15 +8,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 
-export default function User() {
+export default function ViewCategory() {
 
-  const [user, setUser] = useState({});
-  document.title = `view user ${user.username}`;
+  const [category, setCategory] = useState({});
+  document.title = `Category ${category.name}`;
   const [loading, setLoading] = useState(false);
   // get id from url
   const id = window.location.pathname.split("/")[2];
 
-  const getUser = async () => {
+  const getCategory = async () => {
     setLoading(true);
     // axios config header
     const config = {
@@ -28,22 +25,20 @@ export default function User() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    const res = await axios.get(`https://nhat-desu-server.onrender.com/v1/user/${id}`, config);
+    const res = await axios.get(`https://nhat-desu-server.onrender.com/v1/category/${id}`, config);
     setLoading(false);
-    setUser(res.data);
+    setCategory(res.data);
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const username = e.target[0].value;
-    const email = e.target[1].value;
-    const phone = e.target[2].value;
-    const address = e.target[3].value;
-    const user = {
-      username,
-      email,
-      phone,
-      address,
+    const name = e.target[0].value;
+    const description = e.target[1].value;
+    const image = e.target[2].value;
+    const newCategory = {
+      name,
+      description,
+      image,
     };
     // axios config header
     const config = {
@@ -53,16 +48,16 @@ export default function User() {
       },
     };
     try {
-      await axios.put(`https://nhat-desu-server.onrender.com/v1/user/${id}`, user, config);
-      getUser();
-      alert("User updated successfully");
+      await axios.put(`https://nhat-desu-server.onrender.com/v1/category/${id}`, newCategory, config);
+      getCategory();
+      alert("Category updated successfully");
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getUser();
+    getCategory();
   }, []);
 
   const handleDelete = async () => {
@@ -74,9 +69,9 @@ export default function User() {
       },
     };
     try {
-      await axios.delete(`https://nhat-desu-server.onrender.com/v1/user/${id}`, config);
-      window.location.replace("/users");
-      alert("User deleted successfully");
+      await axios.delete(`https://nhat-desu-server.onrender.com/v1/category/${id}`, config);
+      alert("category deleted successfully");
+      window.location.replace("/category");
     } catch (error) {
       console.log(error);
     }
@@ -85,8 +80,8 @@ export default function User() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Edit User</h1>
-        <Link to="/newUser">
+        <h1 className="userTitle">Edit category</h1>
+        <Link to="/add-category">
           <button className="userAddButton">Create</button>
         </Link>
       </div>
@@ -94,61 +89,50 @@ export default function User() {
         <div className="userShow">
           <div className="userShowTop">
             <img
-              src={AtatarDefault}
+              src={category.image}
               alt=""
               className="userShowImg"
             />
             <div className="userShowTopTitle">
               <span className="userShowUsername">
-                {user.username}
-              </span>
-              <span className="userShowUserTitle">
-                {
-                  user.admin ? "Admin" : "User"
-                }
+                {category.name}
               </span>
             </div>
           </div>
           <div className="userShowBottom">
-            <span className="userShowTitle">Account Details</span>
+            <span className="userShowTitle">infor detail</span>
             <div className="userShowInfo">
-              <PermIdentityIcon className="userShowIcon" />
+              <NotesIcon className="userShowIcon" />
               <span className="userShowInfoTitle">
-                {user.username}
+                {category.description}
               </span>
             </div>
             <div className="userShowInfo">
               <CalendarTodayIcon className="userShowIcon" />
               <span className="userShowInfoTitle">
-                {
-                  // format date
-                  new Date(user.createdAt).toDateString()
+                product use: {
+                  category.products ? category.products.length : 0
                 }
               </span>
             </div>
-            <span className="userShowTitle">Contact Details</span>
-            <div className="userShowInfo">
-              <PhoneAndroidIcon className="userShowIcon" />
-              <span className="userShowInfoTitle">
-                {
-                  user.phone ? user.phone : "No phone number"
-                }
-              </span>
-            </div>
-            <div className="userShowInfo">
-              <MailOutlineIcon className="userShowIcon" />
-              <span className="userShowInfoTitle">
-                {user.email}
-              </span>
-            </div>
-            <div className="userShowInfo">
-              <LocationSearchingIcon className="userShowIcon" />
-              <span className="userShowInfoTitle">
-                {
-                  user.address ? user.address : "No address"
-                }
-              </span>
-            </div>
+            <span className="userShowTitle">Product Details</span>
+            {/* map in category.products */}
+            {
+              category.products && category.products.map((product) => (
+                <div className="userShowInfo">
+                  <img 
+                    style={{width: "50px", height: "50px"}}
+                    src={product.image}
+                    alt={product.description}
+                  />
+                  <Link to={`/product/${product.id}`}>
+                    <span className="userShowInfoTitle">
+                      {product.name}
+                    </span>
+                  </Link>
+                </div>
+              ))
+            }
           </div>
         </div>
         <div className="userUpdate">
@@ -161,36 +145,36 @@ export default function User() {
           }>
             <div className="userUpdateLeft">
               <div className="userUpdateItem">
-                <label>Username</label>
+                <label>name</label>
                 <input
                   type="text"
                   className="userUpdateInput"
-                  defaultValue={user.username}
+                  defaultValue={category.name}
                   required
                 />
-                {/* dalue={user.username}
+                {/* dalue={category.username}
                   required
                 /> */}
               </div>
               <div className="userUpdateItem">
-                <label>Email</label>
+                <label>description</label>
                 <input
                   type="text"
                   className="userUpdateInput"
-                  defaultValue={user.email}
+                  defaultValue={category.description}
                   required
                 />
-                {/* dalue={user.email}
+                {/* dalue={category.email}
                   required
                 /> */}
               </div>
               <div className="userUpdateItem">
-                <label>Phone</label>
+                <label>image</label>
                 <input
                   type="text"
                   className="userUpdateInput"
                   defaultValue={
-                    user.phone ? user.phone : ""
+                    category.image
                   }
                   // Value={
                   //   user.phone ? user.phone : ""
@@ -198,34 +182,21 @@ export default function User() {
                   required
                 />
               </div>
-              <div className="userUpdateItem">
-                <label>Address</label>
-                <input
-                  type="text"
-                  className="userUpdateInput"
-                  defaultValue={
-                    user.address ? user.address : ""
-                  }
-                  // Value={
-                  //   user.address ? user.address : ""
-                  // }
-                  required
-                />
-              </div>
+            
 
             </div>
 
             <div className="userUpdateRight">
-              <button className="userUpdateButton">Update</button>
+              <button className="userUpdateButton">Update category</button>
               <button className='userDeleteUser' onClick={ handleDelete }>
-                Delete user {user.username}
+                Delete category {category.name}
               </button>
             </div>
           </form>
         </div>
       </div>
-      <Link to="/users">
-        <button className="button-back">Back to users</button>
+      <Link to="/category">
+        <button className="button-back">Back to category</button>
       </Link>
     </div>
   );

@@ -32,7 +32,7 @@ export default function NewChat() {
     redirect: 'follow'
   };
 
-  fetch("http://localhost:8000/v1/chat/create", requestOptions)
+  fetch("https://nhat-desu-server.onrender.com/v1/chat/create", requestOptions)
     .then(response => response.text())
     .then(result => alert("Create tag chat success"))
     .catch(error => console.log('error', error));

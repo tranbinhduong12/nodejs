@@ -1,4 +1,4 @@
-import "./chatList.css";
+import "./OrderList.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from 'axios';
@@ -10,23 +10,23 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 
-export default function ChatList() {
+export default function OrderList() {
   // get data user from https://nhat-desu-server.onrender.com/v1/user
-  document.title = "Tag chat List";
+  document.title = "Order List";
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [Filter, setFilter] = useState("All");
+
   // paging data user
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(1);
-  const [tagName, setTagName] = useState("")
 
   const getData = async () => {
     setLoading(true);
-    const res = await axios.get('https://nhat-desu-server.onrender.com/v1/chat');
-    setData(res.data.intents);
+    const res = await axios.get('https://nhat-desu-server.onrender.com/v1/order');
+    setData(res.data);
     setLoading(false);
     setPage(1)
     if (res.data.intents.length % 10 !== 0) {
@@ -36,8 +36,8 @@ export default function ChatList() {
     }
   }
 
-  const handleChangeTagName = (e) => {
-    setTagName(e.target.value);
+  const handleChangeFilter = (e) => {
+    setFilter(e.target.value);
   }
 
   useEffect(() => {
@@ -47,21 +47,27 @@ export default function ChatList() {
   return (
     <div className="userList">
       <div className="userListTitleContainer">
-        <h1 className="userListTitle">Tag chat List</h1>
-        <OutlinedInput onChange={ handleChangeTagName } placeholder="Search for tag name" />
-        <Link to="/add-tag">
-          <button className="userAddButton">Create</button>
-        </Link>
+        <h1 className="userListTitle">Order list</h1>
+        {/* select option */}
+        <div className="userListSelect">
+          <select onChange={ handleChangeFilter } className="userListSelectOption" name="active" id="active">
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
       </div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Tag name</TableCell>
-              <TableCell align="center">Description</TableCell>
-              <TableCell align="center">Number patterns</TableCell>
-              <TableCell align="center">Number responses</TableCell>
-              <TableCell align="center">Update last</TableCell>
+              <TableCell>user name</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Number product</TableCell>
+              <TableCell align="center">Total Price</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Created at</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -77,33 +83,42 @@ export default function ChatList() {
                 <TableCell align="center">Loading...</TableCell>
                 <TableCell align="center">Loading...</TableCell>
                 <TableCell align="center">Loading...</TableCell>
+                <TableCell align="center">Loading...</TableCell>
+                <TableCell align="center">Loading...</TableCell>
               </TableRow>
             ) : (
               // data
               data.filter((item) => {
-                if (tagName === "") {
-                  return item
-                } else if (item.tag.toLowerCase().includes(tagName.toLowerCase()) || item.description.toLowerCase().includes(tagName.toLowerCase())) {
-                  return item
+                if (Filter === "All") {
+                  return item;
+                }else{
+                  return item.status === Filter;
                 }
-              }).sort((a, b) => {
-                return new Date(b.updatedAt) - new Date(a.updatedAt);
               }).slice((page - 1) * 10, page * 10).map((item) => (
                 <TableRow
                   key={item.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {item.tag}
+                    <Link
+                      className="link" 
+                      to={`/user/${item.userId}`}>
+                      {item.user.username}
+                    </Link>
                   </TableCell>
-                  <TableCell align="left">{item.description}</TableCell>
-                  <TableCell align="center">{item.patterns.length}</TableCell>
-                  <TableCell align="center">{item.responses.length}</TableCell>
+                  <TableCell align="center">
+                    {item.user.address}
+                    <br />
+                    {item.user.phone}
+                  </TableCell>
+                  <TableCell align="center">{item.products.length}</TableCell>
+                  <TableCell align="center">{item.totalPrice}</TableCell>
+                  <TableCell align="center">{item.status}</TableCell>
                   <TableCell align="center">{
-                    new Date(item.updatedAt).toLocaleDateString()
+                    new Date(item.createdAt).toLocaleDateString()
                   }</TableCell>
                   <TableCell align="center">
-                    <Link to={`/chat/${item.id}`}>
+                    <Link to={`/order/${item._id}`}>
                       <button className="userListEdit">view</button>
                     </Link>
                   </TableCell>
