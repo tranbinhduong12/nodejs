@@ -5,12 +5,14 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 var session = require('express-session');
 
-const categoryRoute = require("./routes/Category");
-const productRoute = require("./routes/Product");
-const authRoute = require("./routes/Auth");
-const userRoute = require("./routes/User");
-const cartRoute = require("./routes/Cart");
-const orderRoute = require("./routes/Order");
+const categoryRoute = require("./routes/apis/Category");
+const productRoute = require("./routes/apis/Product");
+const authRoute = require("./routes/apis/Auth");
+const userRoute = require("./routes/apis/User");
+const cartRoute = require("./routes/apis/Cart");
+const orderRoute = require("./routes/apis/Order");
+
+const homeRoute = require("./routes/Home");
 
 
 dotenv.config();
@@ -54,6 +56,7 @@ app.use('/v1/auth', authRoute);
 app.use('/v1/user', userRoute);
 app.use('/v1/cart',cartRoute);
 app.use('/v1/order', orderRoute);
+app.use('/', homeRoute);
 
 let port = 8000;
 app.listen(port, () => console.log('server is running in port ' + port));

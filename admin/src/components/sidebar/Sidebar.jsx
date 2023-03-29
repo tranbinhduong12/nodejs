@@ -93,29 +93,6 @@ export default function Sidebar() {
             </Link>
           </ul>
         </div>
-        <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Chat bot manage</h3>
-          <ul className="sidebarList">
-            <Link to="/chats" className="link">
-              <li className="sidebarListItem">
-                <MailOutlineIcon className="sidebarIcon" />
-                Tag manager
-              </li>
-            </Link>
-            <Link to="/add-tag" className="link">
-              <li className="sidebarListItem">  
-                <ChatBubbleOutlineIcon className="sidebarIcon" />
-                Create new tag
-              </li>
-            </Link>
-            <Link to="/training" className="link">
-              <li className="sidebarListItem">
-                <DynamicFeedIcon className="sidebarIcon" />
-                Tranning process
-              </li>
-            </Link>
-          </ul>
-        </div>
       </div>
     </div>
   );
