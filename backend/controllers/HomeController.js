@@ -7,8 +7,9 @@ const Product = require('../models/Product');
 const HomeController = {
     index: async(req, res) => {
         // render
-        res.render('index');
+        res.render('pages/index');
     }
+    
 }
 
 module.exports = HomeController;
