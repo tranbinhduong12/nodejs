@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Cart = require('../models/Cart');
 const dotenv = require('dotenv');
 
+let refreshTokens = [];
 dotenv.config();
 
 var data
@@ -40,6 +41,29 @@ const authController = {
             return res.status(500).json(err);
         }
     },
+    //generate accessToken
+    generateAccessToken: (user) => {
+        return jwt.sign(
+            {
+                id: user.id,
+                admin: user.admin
+            },
+            process.env.JWT_ACCESS_KEY,
+            { expiresIn: "30d" }
+        );
+    },
+
+    //generate refreshToken
+    generateRefreshToken: (user) => {
+        return jwt.sign(
+            {
+                id: user.id,
+                admin: user.admin
+            },
+            process.env.JWT_REFRESH_KEY,
+            { expiresIn: "365d" }
+        );
+    },
     //LOGIN
     loginUser: async (req, res) => {
         try {
@@ -52,18 +76,53 @@ const authController = {
                 return res.status(400).json({ message: 'Wrong password' });
             }
             if (user && validPassword) {
-                var sess = req.session; 
-                sess.daDangNhap = true;
-                sess.username = userWithPasswords;
-                return res.status(200).json({ message: 'Logged in', user: user });
+                const accessToken = authController.generateAccessToken(user);
+                const refreshToken = authController.generateRefreshToken(user);
+                refreshTokens.push(refreshToken);
+                res.cookie('refreshToken', refreshToken, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'strict',
+                    path: '/',
+                });
+                const { password, ...userWithPasswords } = user._doc;
+                return res.status(200).json({ ...userWithPasswords, accessToken });
             }
         } catch (err) {
             return res.status(500).json(err);
         }
     },
+    // req refreshToken
+    requestRefreshToken: async (req, res) => {
+        const refreshToken = req.cookies.refreshToken;
+        if (!refreshToken) {
+            return res.status(401).json({ message: 'You are not authenticated' });
+        }
+        if (!refreshTokens.includes(refreshToken)) {
+            return res.status(403).json({ message: 'Refresh token is not valid' });
+        }
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
+            if(err) {
+                console.error(err);
+            }
+            refreshTokens = refreshTokens.filter(token => token !== refreshToken);
+            const newAccessToken = authController.generateAccessToken(user);
+            const newRefreshToken = authController.generateRefreshToken(user);
+            refreshTokens.push(newRefreshToken);
+            res.cookie('refreshToken', newRefreshToken, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'strict',
+                path: '/',
+            });
+            res.status(200).json({ accessToken: newAccessToken });
+        });
+    },
     //logout
     logoutUser: async (req, res) => {
-        req.session.destroy();
+        const refreshToken = req.cookies.refreshToken;
+        refreshTokens = refreshTokens.filter(token => token !== refreshToken);
+        res.clearCookie('refreshToken');
         return res.status(200).json({ message: 'Logged out' });
     }
 }
