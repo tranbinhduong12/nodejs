@@ -14,6 +14,7 @@ const orderRoute = require("./routes/apis/Order");
 
 const homeRoute = require("./routes/Home");
 
+const middleware = require('./middleware/middleware'); 
 
 dotenv.config();
 const app = express();
@@ -56,7 +57,9 @@ app.use('/v1/auth', authRoute);
 app.use('/v1/user', userRoute);
 app.use('/v1/cart',cartRoute);
 app.use('/v1/order', orderRoute);
-app.use('/', homeRoute);
+
+// thêm middleware vào app.use('/', homeRoute);
+app.use('/', middleware.settingMiddleware, homeRoute);
 
 let port = 8000;
 app.listen(port, () => console.log('server is running in port ' + port));
