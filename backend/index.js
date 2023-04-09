@@ -10,7 +10,6 @@ const categoryRoute = require("./routes/apis/Category");
 const productRoute = require("./routes/apis/Product");
 const authRoute = require("./routes/apis/Auth");
 const userRoute = require("./routes/apis/User");
-const cartRoute = require("./routes/apis/Cart");
 const orderRoute = require("./routes/apis/Order");
 
 const homeRoute = require("./routes/Home");
@@ -58,7 +57,6 @@ app.use('/v1/category', categoryRoute);
 app.use('/v1/product', productRoute);
 app.use('/v1/auth', authRoute);
 app.use('/v1/user', userRoute);
-app.use('/v1/cart',cartRoute);
 app.use('/v1/order', orderRoute);
 
 // thêm middleware vào app.use('/', homeRoute);

@@ -11,9 +11,6 @@ router.get('/user/:userId', OrderController.getUserOrders);
 //get order
 router.get('/:id', OrderController.getOrder);
 
-//create order
-router.post('/:userId', OrderController.createOrder);
-
 //update order
 router.put('/:id', OrderController.updateOrder);
 

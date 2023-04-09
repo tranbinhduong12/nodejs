@@ -50,12 +50,7 @@ export default function Sidebar() {
               </li>
             </Link>
             {/* Link to create user */}
-            <Link to="/newUser" className="link">
-              <li className="sidebarListItem">
-                <PersonAddAltIcon className="sidebarIcon" />
-                Create user
-              </li>
-            </Link>
+
           </ul>
         </div>
         <div className="sidebarMenu">
