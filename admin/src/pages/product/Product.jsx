@@ -34,7 +34,7 @@ export default function Product() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      const res = await axios.get("https://nhat-desu-server.onrender.com/v1/category", config);
+      const res = await axios.get("http://localhost:8000/v1/category", config);
       setCategories(res.data);
     } catch (err) {
       console.log(err);
@@ -57,7 +57,7 @@ export default function Product() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      const res = await userRequest.get(`https://nhat-desu-server.onrender.com/v1/product/${productId}`, config);
+      const res = await userRequest.get(`http://localhost:8000/v1/product/${productId}`, config);
 
       const data = {
         name: res.data.name ? res.data.name : "",

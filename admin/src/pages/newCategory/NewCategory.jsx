@@ -20,7 +20,7 @@ export default function NewUser() {
       },
     };
     try {
-      const newUser = axios.post(`https://nhat-desu-server.onrender.com/v1/category`, category, config);
+      const newUser = axios.post(`http://localhost:8000/v1/category`, category, config);
       // move to user page
       alert("New category created successfully");
     }

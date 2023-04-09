@@ -22,72 +22,83 @@
 <body>
 	<div class="super_container">
 
-        <!-- Header -->
-        <%- include('../partials/header') %>
+		<!-- Header -->
+		<%- include('../partials/header') %>
 
 
-		<div class="main-login">
-			<div class="container-login">
-				<input type="checkbox" id="flip">
-				<div class="cover">
-					<div class="front">
-						<img src="/images/details_3.jpg" alt="">
-					</div>
-					<div class="back">
-						<img src="/images/details_3.jpg" alt="">
-					</div>
-				</div>
-				<div class="forms">
-					<div class="form-content">
-						<div class="login-form">
-							<div class="title">Login</div>
-							<form action="#">
-								<div class="input-boxes">
-									<div class="input-box">
-										<i class="fas fa-envelope"></i>
-										<input type="text" placeholder="Enter your email" required>
-									</div>
-									<div class="input-box">
-										<i class="fas fa-lock"></i>
-										<input type="password" placeholder="Enter your password" required>
-									</div>
-									<div class="text"><a href="#">Forgot password?</a></div>
-									<div class="button input-box">
-										<input type="submit" value="Sumbit">
-									</div>
-									<div class="text sign-up-text">Don't have an account? <label for="flip">Sigup
-											now</label></div>
-								</div>
-							</form>
+			<div class="main-login">
+				<div class="container-login">
+					<input type="checkbox" id="flip">
+					<div class="cover">
+						<div class="front">
+							<img src="/images/details_3.jpg" alt="">
 						</div>
-						<div class="signup-form">
-							<div class="title">Signup</div>
-							<form action="#">
-								<div class="input-boxes">
-									<div class="input-box">
-										<i class="fas fa-user"></i>
-										<input type="text" placeholder="Enter your name" required>
+						<div class="back">
+							<img src="/images/details_3.jpg" alt="">
+						</div>
+					</div>
+					<div class="forms">
+						<div class="form-content">
+							<div class="login-form">
+								<div class="title">Login</div>
+								<form id="form-login">
+									<div class="input-boxes">
+										<div class="input-box">
+											<i class="fas fa-envelope"></i>
+											<input type="text" name="username" placeholder="Enter your username"
+												required>
+										</div>
+										<div class="input-box">
+											<i class="fas fa-lock"></i>
+											<input type="password" name="password" placeholder="Enter your password"
+												required>
+										</div>
+										<div class="text"><a href="#">Forgot password?</a></div>
+										<button class="button input-box"
+											style="background-color: #7d2ae8; justify-content: center;">Login
+											now</button>
+										<div class="text sign-up-text">Don't have an account? <label for="flip">Sigup
+												now</label></div>
 									</div>
-									<div class="input-box">
-										<i class="fas fa-envelope"></i>
-										<input type="text" placeholder="Enter your email" required>
+								</form>
+							</div>
+							<div class="signup-form">
+								<div class="title">Signup</div>
+								<form id="form-register">
+									<div class="input-boxes">
+										<div class="input-box">
+											<i class="fas fa-user"></i>
+											<input type="text" name="username" placeholder="Enter your username"
+												required>
+										</div>
+										<div class="input-box">
+											<i class="fas fa-envelope"></i>
+											<input type="text" name="email" placeholder="Enter your email" required>
+										</div>
+										<div class="input-box">
+											<i class="fas fa-phone"></i>
+											<input type="text" name="phone" placeholder="Enter your phone" required>
+										</div>
+										<div class="input-box">
+											<i class="fa-solid fa-location-dot"></i>
+											<input type="text" name="address" placeholder="Enter your address" required>
+										</div>
+										<div class="input-box">
+											<i class="fas fa-lock"></i>
+											<input type="password" name="password" placeholder="Enter your password"
+												required>
+										</div>
+										<button class="button input-box"
+											style="background-color: #7d2ae8; justify-content: center;">register</button>
+										<div class="text sign-up-text">Already have an account? <label for="flip">Login
+												now</label></div>
 									</div>
-									<div class="input-box">
-										<i class="fas fa-lock"></i>
-										<input type="password" placeholder="Enter your password" required>
-									</div>
-									<div class="button input-box">
-										<input type="submit" value="Sumbit">
-									</div>
-									<div class="text sign-up-text">Already have an account? <label for="flip">Login
-											now</label></div>
-								</div>
-							</form>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
 	</div>
 	<script src="/js/jquery-3.2.1.min.js"></script>
@@ -103,6 +114,101 @@
 	<script src="/plugins/easing/easing.js"></script>
 	<script src="/plugins/parallax-js-master/parallax.min.js"></script>
 	<script src="/js/custom.js"></script>
+	<script>
+		document.getElementById("form-register").addEventListener("submit", function (event) {
+			event.preventDefault(); // Ngăn chặn việc gửi form đi
+
+			// Kiểm tra giá trị của các trường dữ liệu
+			var username = document.getElementsByName("username")[1].value;
+			var email = document.getElementsByName("email")[0].value;
+			var phone = document.getElementsByName("phone")[0].value;
+			var address = document.getElementsByName("address")[0].value;
+			var password = document.getElementsByName("password")[1].value;
+
+			// Thực hiện kiểm tra hợp lệ
+			if (username === "" || email === "" || phone === "" || address === "" || password === "") {
+				alert("Vui lòng điền đầy đủ thông tin vào các trường!");
+				return;
+			}
+
+			// Kiểm tra định dạng email
+			var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailPattern.test(email)) {
+				alert("Vui lòng nhập đúng định dạng email!");
+				return;
+			}
+
+			// Kiểm tra định dạng số điện thoại
+			var phonePattern = /^[0-9]{10,11}$/;
+			if (!phonePattern.test(phone)) {
+				alert("Vui lòng nhập đúng định dạng số điện thoại!");
+				return;
+			}
+
+			// Nếu thông tin nhập vào hợp lệ, có thể gửi form đi
+			var settings = {
+				"url": "http://localhost:8000/v1/auth/register",
+				"method": "POST",
+				"timeout": 0,
+				"headers": {
+					"Content-Type": "application/json",
+					"Cookie": "connect.sid=s%3AES-tEEBnDNLo_pEwlTyJLyQAKhUqLpQo.JC0Gxpw1Tm8MlzWnRIkBzS8tarS2OQ8wVSxPOb%2FXdEg"
+				},
+				"data": JSON.stringify({
+					"username": username,
+					"email": email,
+					"phone": phone,
+					"address": address,
+					"password": password
+				}),
+			};
+
+			$.ajax(settings).done(function (response) {
+				alert("Đăng ký thành công! hãy đăng nhập để tiếp tục");
+				document.getElementById("form-register").reset();
+			}).fail(function (xhr, textStatus, errorThrown) {
+				alert("Đăng ký thất bại!. hãy thử lại với các thông tin khác");
+			});
+		});
+		document.getElementById("form-login").addEventListener("submit", function (event) {
+			event.preventDefault(); // Ngăn chặn việc gửi form đi
+
+			// Kiểm tra giá trị của các trường dữ liệu
+			var username = document.getElementsByName("username")[0].value;
+			var password = document.getElementsByName("password")[0].value;
+
+			// Thực hiện kiểm tra hợp lệ
+			if (username === "" || password === "") {
+				alert("Vui lòng điền đầy đủ thông tin vào các trường!");
+				return;
+			}
+
+			// Nếu thông tin nhập vào hợp lệ, có thể gửi form đi
+			var settings = {
+				"url": "http://localhost:8000/v1/auth/login",
+				"method": "POST",
+				"timeout": 0,
+				"headers": {
+					"Content-Type": "application/json",
+					"Cookie": "connect.sid=s%3AES-tEEBnDNLo_pEwlTyJLyQAKhUqLpQo.JC0Gxpw1Tm8MlzWnRIkBzS8tarS2OQ8wVSxPOb%2FXdEg"
+				},
+				"data": JSON.stringify({
+					"username": username,
+					"password": password
+				}),
+			};
+
+			$.ajax(settings).done(function (response) {
+				alert("đăng nhập thành công!");
+				// chuyển hướng về trang chủ
+				window.location.href = "http://localhost:8000/";
+			}).fail(function (xhr, textStatus, errorThrown) {
+				alert("Đăng nhập thất bại!. hãy thử lại với các thông tin khác");
+				// clear password
+				document.getElementsByName("password")[0].value = "";
+			});
+		});
+	</script>
 
 </body>
 

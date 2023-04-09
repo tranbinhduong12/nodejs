@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper';
 
 
 export default function OrderList() {
-  // get data user from https://nhat-desu-server.onrender.com/v1/user
+  // get data user from http://localhost:8000/v1/user
   document.title = "Order List";
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ export default function OrderList() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await axios.get('https://nhat-desu-server.onrender.com/v1/order');
+    const res = await axios.get('http://localhost:8000/v1/order');
     setData(res.data);
     setLoading(false);
     setPage(1)
@@ -103,13 +103,13 @@ export default function OrderList() {
                     <Link
                       className="link" 
                       to={`/user/${item.userId}`}>
-                      {item.user.username}
+                      {item.userProfile.name}
                     </Link>
                   </TableCell>
                   <TableCell align="center">
-                    {item.user.address}
+                    {item.userProfile.address}
                     <br />
-                    {item.user.phone}
+                    {item.userProfile.phone}
                   </TableCell>
                   <TableCell align="center">{item.products.length}</TableCell>
                   <TableCell align="center">{item.totalPrice}</TableCell>
@@ -118,7 +118,7 @@ export default function OrderList() {
                     new Date(item.createdAt).toLocaleDateString()
                   }</TableCell>
                   <TableCell align="center">
-                    <Link to={`/order/${item._id}`}>
+                    <Link to={`/order/${item.id}`}>
                       <button className="userListEdit">view</button>
                     </Link>
                   </TableCell>

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/apiCalls";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
 
 const Login = () => {
-
+  const nav = useNavigate();
   const admin = useSelector((state) => state.user);
   if (admin.currentUser !== null && admin.currentUser['admin'] === true) {
     window.location.replace("/");
@@ -18,12 +19,8 @@ const Login = () => {
     e.preventDefault();
     const loginAction = await login(dispatch, { username, password });
     if (loginAction != null) {
-      if (loginAction['admin'] === true) {
-        alert(`hello ${loginAction.username}`);
-        window.location.replace("/");
-      }else{
-        alert(`you are not admin`)
-      }
+      alert(`hello ${loginAction.username}`);
+      nav("/");
     }else{
       alert('login failed');
     }

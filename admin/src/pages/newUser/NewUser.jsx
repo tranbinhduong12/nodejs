@@ -26,7 +26,7 @@ export default function NewUser() {
       },
     };
     try {
-      const res = await axios.post("https://nhat-desu-server.onrender.com/v1/auth/register", user);
+      const res = await axios.post("http://localhost:8000/v1/auth/register", user);
       // move to user page
       if (res.data) {
         window.location.replace(`/user/${res.data.id}`);

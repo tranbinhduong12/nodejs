@@ -14,7 +14,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 
 export default function UserList() {
-  // get data user from https://nhat-desu-server.onrender.com/v1/user
+  // get data user from http://localhost:8000/v1/user
   document.title = "List user";
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ export default function UserList() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await axios.get('https://nhat-desu-server.onrender.com/v1/user');
+    const res = await axios.get('http://localhost:8000/v1/user');
     setData(res.data);
     setLoading(false);
     setPage(1);

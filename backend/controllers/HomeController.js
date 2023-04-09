@@ -3,6 +3,7 @@ const Cart = require('../models/Cart');
 const User = require('../models/User');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
+const bcrypt = require('bcrypt');
 
 const HomeController = {
     index: async (req, res) => {
@@ -49,18 +50,6 @@ const HomeController = {
         } catch (err) {
             return res.status(500).json(err);
         }
-    },
-    cart: async (req, res) => {
-        // render
-        res.render('pages/cart');
-    },
-    checkout: async (req, res) => {
-        // render
-        res.render('pages/checkout');
-    },
-    login: async (req, res) => {
-        // render
-        res.render('pages/login');
     }
 
 }

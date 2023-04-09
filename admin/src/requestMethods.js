@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://nhat-desu-server.onrender.com/v1/";
+const BASE_URL = "http://localhost:8000/v1/";
 // const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken;
 const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
 const currentUser = user && JSON.parse(user).currentUser;

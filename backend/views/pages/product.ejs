@@ -4,7 +4,7 @@
 <!-- Mirrored from preview.colorlib.com/theme/sublime/product.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Mar 2023 16:25:39 GMT -->
 
 <head>
-	<title>Product</title>
+	<title><%= product.name %></title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Sublime project">
@@ -63,10 +63,12 @@
 								<p><%= product.description %></p>
 							</div>
 
-							<div class="product_quantity_container">
+							<form id="form-submit" class="product_quantity_container" method="post" action="/cart/<%= user.id %>/<%= product._id %>">
+								
 								<div class="product_quantity clearfix">
 									<span>Qty</span>
-									<input id="quantity_input" type="text" pattern="[0-9]*" value="1">
+									<input id="quantity_input" name="quantity" type="text" pattern="[1-9]*" min="1" value="1">
+
 									<div class="quantity_buttons">
 										<div id="quantity_inc_button" class="quantity_inc quantity_control"><i
 												class="fa fa-chevron-up" aria-hidden="true"></i></div>
@@ -74,8 +76,13 @@
 												class="fa fa-chevron-down" aria-hidden="true"></i></div>
 									</div>
 								</div>
-								<div class="button cart_button"><a href="#">Add to cart</a></div>
-							</div>
+								<% if (daDangNhap) { %>
+									<div type="submit" class="button cart_button"><a href="#" onclick="onSubmit()">Add to cart</a></div>
+								<% } else { %>
+									<div type="button" class="button cart_button"><a href="/login">Login to process</a></div>
+								<% } %>
+
+							</form>
 
 							<div class="details_share">
 								<span>Share:</span>
@@ -154,11 +161,11 @@
 
 		gtag('config', 'UA-23581568-13');
 	</script>
-	<script defer
-		src="https://static.cloudflareinsights.com/beacon.min.js/vb26e4fa9e5134444860be286fd8771851679335129114"
-		integrity="sha512-M3hN/6cva/SjwrOtyXeUa5IuCT0sedyfT+jK/OV+s+D0RnzrTfwjwJHhd+wYfMm9HJSrZ1IKksOdddLuN6KOzw=="
-		data-cf-beacon='{"rayId":"7ae8fd38bfda20fb","version":"2023.3.0","b":1,"token":"cd0b4b3a733644fc843ef0b185f98241","si":100}'
-		crossorigin="anonymous"></script>
+	<script>
+		function onSubmit(){
+			document.getElementById("form-submit").submit();
+		}
+	</script>
 </body>
 
 <!-- Mirrored from preview.colorlib.com/theme/sublime/product.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Mar 2023 16:25:41 GMT -->

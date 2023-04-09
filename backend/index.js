@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 var session = require('express-session');
+const bodyParser = require('body-parser');
 
 const categoryRoute = require("./routes/apis/Category");
 const productRoute = require("./routes/apis/Product");
@@ -22,6 +23,8 @@ const app = express();
 app.set("views",__dirname + "/views");
 app.set("view engine", "ejs");
 app.use("/", express.static(__dirname + "/public"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // connect mongodb
 mongoose.connect(process.env.MONGODB_URL, () => {

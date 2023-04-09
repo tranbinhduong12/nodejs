@@ -25,7 +25,7 @@ export default function ViewCategory() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    const res = await axios.get(`https://nhat-desu-server.onrender.com/v1/category/${id}`, config);
+    const res = await axios.get(`http://localhost:8000/v1/category/${id}`, config);
     setLoading(false);
     setCategory(res.data);
   };
@@ -48,7 +48,7 @@ export default function ViewCategory() {
       },
     };
     try {
-      await axios.put(`https://nhat-desu-server.onrender.com/v1/category/${id}`, newCategory, config);
+      await axios.put(`http://localhost:8000/v1/category/${id}`, newCategory, config);
       getCategory();
       alert("Category updated successfully");
     } catch (error) {
@@ -69,7 +69,7 @@ export default function ViewCategory() {
       },
     };
     try {
-      await axios.delete(`https://nhat-desu-server.onrender.com/v1/category/${id}`, config);
+      await axios.delete(`http://localhost:8000/v1/category/${id}`, config);
       alert("category deleted successfully");
       window.location.replace("/category");
     } catch (error) {

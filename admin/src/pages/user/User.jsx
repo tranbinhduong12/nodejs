@@ -28,7 +28,7 @@ export default function User() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    const res = await axios.get(`https://nhat-desu-server.onrender.com/v1/user/${id}`, config);
+    const res = await axios.get(`http://localhost:8000/v1/user/${id}`, config);
     setLoading(false);
     setUser(res.data);
   };
@@ -53,7 +53,7 @@ export default function User() {
       },
     };
     try {
-      await axios.put(`https://nhat-desu-server.onrender.com/v1/user/${id}`, user, config);
+      await axios.put(`http://localhost:8000/v1/user/${id}`, user, config);
       getUser();
       alert("User updated successfully");
     } catch (error) {
@@ -74,7 +74,7 @@ export default function User() {
       },
     };
     try {
-      await axios.delete(`https://nhat-desu-server.onrender.com/v1/user/${id}`, config);
+      await axios.delete(`http://localhost:8000/v1/user/${id}`, config);
       window.location.replace("/users");
       alert("User deleted successfully");
     } catch (error) {

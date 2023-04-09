@@ -14,11 +14,10 @@ import Button from '@mui/material/Button';
 import DoneIcon from '@mui/icons-material/Done';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
 
 
 export default function Order() {
-  // get data user from https://nhat-desu-server.onrender.com/v1/user
+  // get data user from http://localhost:8000/v1/user
   document.title = "Order details";
   const id = window.location.pathname.split("/")[2];
   const [data, setData] = useState([]);
@@ -27,7 +26,7 @@ export default function Order() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await axios.get(`https://nhat-desu-server.onrender.com/v1/order/${id}`);
+    const res = await axios.get(`http://localhost:8000/v1/order/${id}`);
     setData(res.data);
     setLoading(false);
   }
@@ -38,7 +37,7 @@ export default function Order() {
 
   const handleClickAccepted = async () => {
     let statusOrder = "Accepted";
-    const res = await axios.put(`https://nhat-desu-server.onrender.com/v1/order/${id}`, {
+    const res = await axios.put(`http://localhost:8000/v1/order/${id}`, {
       status: statusOrder
     });
     getData();
@@ -46,7 +45,7 @@ export default function Order() {
 
   const handleClickRejected = async () => {
     let statusOrder = "Rejected";
-    const res = await axios.put(`https://nhat-desu-server.onrender.com/v1/order/${id}`, {
+    const res = await axios.put(`http://localhost:8000/v1/order/${id}`, {
       status: statusOrder
     });
 
@@ -65,7 +64,7 @@ export default function Order() {
           <Link to="/orders">Trở về</Link>
           <p>
             <span>Order ID: </span> 
-            {data._id}
+            {data.id}
           </p>
           <p>
             <span>Order date: </span>
@@ -78,6 +77,14 @@ export default function Order() {
           <p>
             <span>Order total: </span>
             {data.totalPrice}$
+          </p>
+          <p>
+            <span>Order payment: </span>
+            {data.paymentType}
+          </p>
+          <p>
+            <span>user note: </span>
+            {data.userProfile ? data.userProfile.note : "No data"}
           </p>
           {/* button */}
           {
@@ -102,23 +109,26 @@ export default function Order() {
         <div className="inforProductinforUser">
           <p>
             <span>id: </span>
-            {data.user ? data.userId : "No data"}
+            {data.userId ? data.userId : "No data"}
           </p>
           <p>
             <span>User name: </span>
-            {data.user ? data.user.username : "No data"}
+            {data.userProfile ? data.userProfile.name : "No data"}
           </p>
           <p>
             <span>User email: </span>
-            {data.user ? data.user.email : "No data"}
+            {data.userProfile ? data.userProfile.email : "No data"}
           </p>
           <p>
             <span>User phone: </span>
-            {data.user ? data.user.phone : "No data"}
+            {data.userProfile ? data.userProfile.phone : "No data"}
           </p>
           <p>
             <span>User address: </span>
-            {data.user ? data.user.address : "No data"}
+            {data.userProfile ? data.userProfile.address : "No data"}
+          </p>
+          <p>
+            <Link to={`/user/${data.userId}`}>View account detail</Link>
           </p>
         </div>
 
